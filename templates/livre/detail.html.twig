@@ -1,0 +1,61 @@
+{# templates/livre/detail.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Livre{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>
+            {{ livre.titre }}
+            <a title="Modifier" class="text-decoration-none" href="{{ path('livre_modif', {'id': livre.id}) }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+            </a>
+            <a title="Supprimer" class="text-decoration-none" href="{{ path('livre_supprimer', {'id': livre.id}) }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                </svg>
+            </a>
+        </h1>
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">Auteur : {{ livre.auteur }}</p>
+                <p class="card-text">Résumé : {{ livre.resume }}</p>
+                <p class="card-text">Date de Parution : {{ livre.dateParution ? livre.dateParution|date('Y-m-d') : 'Non spécifiée' }}</p>
+            </div>
+        </div>
+        <div class="d-flex mt-3">
+            <p class="m-3" > <span id="votes">{{ livre.votes }}</span> vote(s) </p>
+            <button id="voteButton" class="btn btn-success">Voter</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const voteButton = document.getElementById('voteButton');
+        const votes = document.getElementById('votes');
+
+        voteButton.addEventListener('click', function () {
+            fetch('{{ path('livre_vote', {'id': livre.id}) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                votes.textContent = data.votes;
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête Ajax :', error);
+            });
+        });
+    });
+</script>
+{% endblock %}

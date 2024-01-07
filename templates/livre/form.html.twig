@@ -1,0 +1,14 @@
+{# templates/livre/ajouter.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{titre}} un Livre{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{titre}} un Livre</h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
