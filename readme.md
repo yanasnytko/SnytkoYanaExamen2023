@@ -1,9 +1,5 @@
 # Examen 2023 par Yana Snytko
 
-## Table des Matières
-- [Installation](#installation)
-- [Utilisation](#utilisation)
-
 ## Installation
 
 ### Prérequis
@@ -17,6 +13,8 @@
 3. Configurez votre environnement (si nécessaire).
 4. Lancez le serveur de développement : `symfony server:start` (pour les projets Symfony) ou utilisez votre serveur web préféré.
 
-## Utilisation
+### Base de données
 
-N'oubliez pas de créer la base de données. 
+N'oubliez pas de créer la base de données :
+1. Créez la DB : `php bin/console doctrine:database:create`
+2. Créez les tables : `php bin/console doctrine:migrations:migrate`
