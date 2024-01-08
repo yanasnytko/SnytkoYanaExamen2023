@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ titre }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="container mt-4">
+    <h1>{{ titre }}</h1>
+
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('login') }}" method="post" class="container mt-4">
+        <div class="form-group">
+            <label for="username">Pseudo :</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control mb-3">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="_password" class="form-control mb-3">
+        </div>
+
+        <input type="hidden" name="accueil" value="/">
+
+        <button type="submit" class="btn btn-primary mb-3">Se connecter</button>
+    </form>
+
+</div>
+{% endblock %}

@@ -11,7 +11,7 @@
         {% block javascripts %}
         {% endblock %}
     </head>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light container">
         <a class="navbar-brand" href="{{ path('accueil') }}">Accueil</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,9 +24,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('genres') }}">Liste des Genres</a>
                 </li>
+                {% if is_granted('IS_AUTHENTICATED') == false %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('register') }}">S'enregistrer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('login') }}">Se connecter</a>
+                </li>
+                {% endif %}
+                
+                {% if is_granted('IS_AUTHENTICATED') %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('livre_ajouter') }}">Ajouter un Livre</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('_logout_main') }}">Se déconnecter</a>
+                </li>
+                {% endif %}
+
                 {# Ajoutez d'autres liens de navigation si nécessaire #}
             </ul>
         </div>

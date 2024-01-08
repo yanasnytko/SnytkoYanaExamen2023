@@ -4,14 +4,26 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            form_login:
+                # "login" is the name of the route created previously
+                login_path: login
+                check_path: login
+                # enable_csrf: true
+            logout:
+                path: /logout
+                target: accueil
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -19,11 +31,22 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: '^/livre_ajouter', roles: ROLE_USER }
+        - { path: '^/livre_modif', roles: ROLE_USER }
+        - { path: '^/livre_supprimer', roles: ROLE_USER }
+        - { path: '^/livre_vote/\d+$', roles: ROLE_USER }
+        - { path: '^/genre_ajouter', roles: ROLE_USER }
+        - { path: '^/genre_modif', roles: ROLE_USER }
+        - { path: '^/genre_modif', roles: ROLE_USER }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+        - { path: ^/admin/register, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

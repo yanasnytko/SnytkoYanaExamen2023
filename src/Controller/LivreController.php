@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Livre;
+use App\Entity\User;
 use App\Form\LivreType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,7 @@ class LivreController extends AbstractController
     #[Route('/', name: 'accueil')]
     public function liste(EntityManagerInterface $entityManager): Response
     {
+        # $user = $this->getUser();
         $livres = $entityManager->getRepository(Livre::class)->findAll();
 
         return $this->render('livre/liste.html.twig', ['livres' => $livres]);
@@ -28,7 +30,7 @@ class LivreController extends AbstractController
 
         if (!$livre) {
             throw $this->createNotFoundException(
-                'No product found for id '.$id
+                'Rien a été trouvé pour le id '.$id
             );
         }
 
